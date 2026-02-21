@@ -24,7 +24,7 @@ def result_callback(result: HandLandmarkerResult, output_image: mp.Image, timest
 base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/hand_landmarker.task')
 options = HandLandmarkerOptions(
     base_options=base_options,
-    num_hands=2,  
+    num_hands=1,  
     min_hand_detection_confidence=0.5, 
     min_hand_presence_confidence=0.5,
     min_tracking_confidence=0.5,
@@ -89,7 +89,7 @@ with HandLandmarker.create_from_options(options) as landmarker:
 
 
         cv2.imshow('testing', frame)
-        cv2.resizeWindow('testing', 1280, 600)
+        cv2.resizeWindow('testing', 1280, 720)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
