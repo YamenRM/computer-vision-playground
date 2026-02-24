@@ -1,13 +1,14 @@
 import cv2
 import mediapipe as mp
 import pyautogui 
+import streamlit as st
 import time
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.vision import drawing_utils
 from mediapipe.tasks.python.vision import drawing_styles
 
-def hand_mouse():
+def hand_mouse(placeholder):
 
     # initialize mediapipe Hand landmarker
     BaseOptions = mp.tasks.BaseOptions
@@ -23,7 +24,7 @@ def hand_mouse():
     latest_result = None
 
     def result_callback(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-        global latest_result
+        nonlocal latest_result
         latest_result = result
 
     # setup mediapipe hand landmarker options
@@ -45,12 +46,12 @@ def hand_mouse():
 
 
         
-        while cap.isOpened():
+        while cap.isOpened() and st.session_state.get('run_mouse', False):
             success, frame = cap.read()
             if not success: break
 
             frame = cv2.flip(frame, 1) 
-            frame = cv2.resize(frame, (1366, 768))
+
 
 
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -116,10 +117,7 @@ def hand_mouse():
                         pyautogui.scroll(-100)
 
 
-            cv2.imshow('mouse controller', frame)
-            cv2.resizeWindow('mouse controller', 1366, 768)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+            placeholder.image(frame, channels='BGR')
 
     cap.release()
     cv2.destroyAllWindows()

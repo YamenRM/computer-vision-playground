@@ -1,12 +1,13 @@
 import cv2
 import mediapipe as mp
+import streamlit as st
 import time
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.vision import drawing_utils
 from mediapipe.tasks.python.vision import drawing_styles
 
-def face_landmark():
+def face_landmark(placeholder):
     
     # initialize mediapipe face landmarker
     BaseOptions = mp.tasks.BaseOptions
@@ -21,7 +22,7 @@ def face_landmark():
     latest_result = None
 
     def result_callback(result: FaceLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-        global latest_result
+        nonlocal latest_result
         latest_result = result
 
     # setup mediapipe hand landmarker options
@@ -42,12 +43,11 @@ def face_landmark():
         cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
         
-        while cap.isOpened():
+        while cap.isOpened() and st.session_state.get('run_face_landmark', False):
             success, frame = cap.read()
             if not success: break
 
             frame = cv2.flip(frame, 1) 
-            frame = cv2.resize(frame, (1280, 600))
 
 
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -76,10 +76,7 @@ def face_landmark():
                     connection_drawing_spec=drawing_styles.get_default_face_mesh_contours_style())
 
 
-            cv2.imshow('testing', frame)
-            cv2.resizeWindow('testing', 1280, 720)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+            placeholder.image(frame, channels='BGR')
 
     cap.release()
     cv2.destroyAllWindows()
