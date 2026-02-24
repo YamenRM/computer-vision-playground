@@ -7,115 +7,121 @@ from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.vision import drawing_utils
 from mediapipe.tasks.python.vision import drawing_styles
 
+def hand_mouse():
 
-# initialize mediapipe Hand landmarker
-BaseOptions = mp.tasks.BaseOptions
-HandLandmarker = mp.tasks.vision.HandLandmarker
-HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
-HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
-VisionRunningMode = mp.tasks.vision.RunningMode
-HandLandmarker=vision.HandLandmarker
-
-# drawing parameters
-MARGIN = 10  
-FONT_SIZE = 1
-FONT_THICKNESS = 1
-HANDEDNESS_TEXT_COLOR = (88, 205, 54)
+    # initialize mediapipe Hand landmarker
+    BaseOptions = mp.tasks.BaseOptions
+    HandLandmarker = mp.tasks.vision.HandLandmarker
+    HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
+    HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
+    VisionRunningMode = mp.tasks.vision.RunningMode
+    HandLandmarker=vision.HandLandmarker
 
 
 
+    # result callback function to store the latest hand landmarker result  
+    latest_result = None
 
-# result callback function to store the latest hand landmarker result  
-latest_result = None
+    def result_callback(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
+        global latest_result
+        latest_result = result
 
-def result_callback(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-    global latest_result
-    latest_result = result
+    # setup mediapipe hand landmarker options
+    base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/hand_landmarker.task')
+    options = HandLandmarkerOptions(
+        base_options=base_options,
+        num_hands=1,  
+        min_hand_detection_confidence=0.5, 
+        min_hand_presence_confidence=0.5,
+        min_tracking_confidence=0.5,
+        running_mode=VisionRunningMode.LIVE_STREAM,
+        result_callback=result_callback
+    )
 
-# setup mediapipe hand landmarker options
-base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/hand_landmarker.task')
-options = HandLandmarkerOptions(
-    base_options=base_options,
-    num_hands=1,  
-    min_hand_detection_confidence=0.5, 
-    min_hand_presence_confidence=0.5,
-    min_tracking_confidence=0.5,
-    running_mode=VisionRunningMode.LIVE_STREAM,
-    result_callback=result_callback
-)
-
-# start the live cam and hand detection loop
-with HandLandmarker.create_from_options(options) as landmarker:
-    cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-
-
-    
-    while cap.isOpened():
-        success, frame = cap.read()
-        if not success: break
-
-        frame = cv2.flip(frame, 1) 
-        frame = cv2.resize(frame, (1366, 768))
+    # start the live cam and hand detection loop
+    with HandLandmarker.create_from_options(options) as landmarker:
+        cap = cv2.VideoCapture(0)
+        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
 
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
         
-        # use the current timestamp in milliseconds for the face landmarker
-        timestamp = int(time.time_ns() // 1000000)  
-        landmarker.detect_async(mp_image, timestamp)
+        while cap.isOpened():
+            success, frame = cap.read()
+            if not success: break
 
-        # draw the hand landmarks on the frame
-        if latest_result and latest_result.hand_landmarks:
-            for hand_landmarks in latest_result.hand_landmarks:
-                drawing_utils.draw_landmarks(
-                image=frame,
-                landmark_list=hand_landmarks,
-                connections=vision.HandLandmarksConnections.HAND_CONNECTIONS,
-                landmark_drawing_spec=drawing_styles.get_default_hand_landmarks_style(),
-                connection_drawing_spec=drawing_styles.get_default_hand_connections_style())
-
-# controling the mouse with the tip of the index finger and the thumb
-
-                # Get the dimensions of the frame
-                height, width, _ = frame.shape
-                # Extract the x and y coordinates of the hand landmarks
-                x_coordinates = [landmark.x for landmark in hand_landmarks]
-                y_coordinates = [landmark.y for landmark in hand_landmarks]
-
-                index_tip = (int(x_coordinates[8] * width), int(y_coordinates[8] * height))
+            frame = cv2.flip(frame, 1) 
+            frame = cv2.resize(frame, (1366, 768))
 
 
-                # drawing a ciurle on the tip of the index finger
-                cv2.circle(frame, (index_tip), 10, (255, 255, 255), -1)
-                
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
             
+            # use the current timestamp in milliseconds for the face landmarker
+            timestamp = int(time.time_ns() // 1000000)  
+            landmarker.detect_async(mp_image, timestamp)
 
-                #Move the mouse cursor to the position of the index finger tip intstantly
-                pyautogui.moveTo((index_tip))
-                
+            # draw the hand landmarks on the frame
+            if latest_result and latest_result.hand_landmarks:
+                for hand_landmarks in latest_result.hand_landmarks:
+                    drawing_utils.draw_landmarks(
+                    image=frame,
+                    landmark_list=hand_landmarks,
+                    connections=vision.HandLandmarksConnections.HAND_CONNECTIONS,
+                    landmark_drawing_spec=drawing_styles.get_default_hand_landmarks_style(),
+                    connection_drawing_spec=drawing_styles.get_default_hand_connections_style())
 
-                # click the mouse when the distance between the index finger tip and thumb tip is less than a certain threshold
-                distance = ((x_coordinates[8] - x_coordinates[12]) ** 2 + (y_coordinates[8] - y_coordinates[12]) ** 2) ** 0.5
-                if distance < 0.08 and distance > 0.06:
-                   pyautogui.click()
-                   delay = 0.2
-                   time.sleep(delay)  
+                # controling the mouse with the whole hand
 
-                   # add a holding action when the distance is less than a smaller threshold
-                elif distance < 0.06:
-                    pyautogui.mouseDown()
-                    # add a release action when the distance is greater than the smaller threshold
-                elif distance > 0.06:
-                    pyautogui.mouseUp()
+                    # Get the dimensions of the frame
+                    height, width, _ = frame.shape
+                    # Extract the x and y coordinates of the hand landmarks
+                    x_coordinates = [landmark.x for landmark in hand_landmarks]
+                    y_coordinates = [landmark.y for landmark in hand_landmarks]
+
+                    # get the centre of the tringle formed by the wrist, index finger mcp and pinky mcp to use it as a reference point for the mouse cursor
+                    wrist_tip = (int(x_coordinates[0] * width), int(y_coordinates[0] * height))
+                    index_mcp = (int(x_coordinates[5] * width), int(y_coordinates[5] * height))
+                    picky_mcp = (int(x_coordinates[17] * width), int(y_coordinates[17] * height))
+
+                    middle_point = (int((wrist_tip[0] + index_mcp[0] + picky_mcp[0]) / 3), int((wrist_tip[1] + index_mcp[1] + picky_mcp[1]) / 3))
+
+                    cv2.circle(frame, (middle_point), 10, (0, 255, 255), -1)
+
+                    pyautogui.moveTo((middle_point))
+
+                    # makeing the mouse functions
+                    index_tip = (int(x_coordinates[8] * width), int(y_coordinates[8] * height))
+                    thumb_tip = (int(x_coordinates[4] * width), int(y_coordinates[4] * height))
+                    middle_finger_tip = (int(x_coordinates[12] * width), int(y_coordinates[12] * height))
+                    ring_tip = (int(x_coordinates[16] * width), int(y_coordinates[16] * height))
+                    pinky_tip = (int(x_coordinates[20] * width), int(y_coordinates[20] * height))
 
 
 
-        cv2.imshow('mouse controler', frame)
-        cv2.resizeWindow('mouse controler', 1366, 768)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+                    click_distance = ((index_tip[0] - thumb_tip[0]) ** 2 + (index_tip[1] - thumb_tip[1]) ** 2) ** 0.5
+                    right_click_distance = ((middle_finger_tip[0] - thumb_tip[0]) ** 2 + (middle_finger_tip[1] - thumb_tip[1]) ** 2) ** 0.5
+                    drag_distance = ((ring_tip[0] - thumb_tip[0]) ** 2 + (ring_tip[1] - thumb_tip[1]) ** 2) ** 0.5
+                    scroll_distance = ((pinky_tip[0] - thumb_tip[0]) ** 2 + (pinky_tip[1] - thumb_tip[1]) ** 2) ** 0.5
 
-cap.release()
-cv2.destroyAllWindows()
+                    
+                    if click_distance < 40:  
+                        pyautogui.click()    
+                    elif drag_distance < 40:
+                        pyautogui.mouseDown()
+                    elif right_click_distance < 40:
+                        pyautogui.click(button='right') 
+                    elif scroll_distance < 60 and scroll_distance > 20:
+                        pyautogui.scroll(100)
+                    elif scroll_distance > 60 and scroll_distance < 100:
+                        pyautogui.scroll(-100)
+
+
+            cv2.imshow('mouse controller', frame)
+            cv2.resizeWindow('mouse controller', 1366, 768)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
