@@ -25,7 +25,7 @@ def face_landmark(placeholder):
         nonlocal latest_result
         latest_result = result
 
-    # setup mediapipe hand landmarker options
+    # setup mediapipe face landmarker options
     base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/face_landmarker.task')
     options = FaceLandmarkerOptions(
         base_options=base_options,
@@ -53,21 +53,21 @@ def face_landmark(placeholder):
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
             
-            # use the current timestamp in milliseconds for the face landmarker
+            
             timestamp = int(time.time_ns() // 1000000)  
             landmarker.detect_async(mp_image, timestamp)
 
             # draw the face landmarks on the frame
             if latest_result and latest_result.face_landmarks:
                 for face_landmarks in latest_result.face_landmarks:
-                    # style 1
+                    
                     drawing_utils.draw_landmarks(
                     image=frame,
                     landmark_list=face_landmarks,
                     connections=vision.FaceLandmarksConnections.FACE_LANDMARKS_TESSELATION,
                     landmark_drawing_spec=None,
                     connection_drawing_spec=drawing_styles.get_default_face_mesh_tesselation_style())
-                    # style 2
+                   
                     drawing_utils.draw_landmarks(
                     image=frame,
                     landmark_list=face_landmarks,

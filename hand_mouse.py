@@ -71,13 +71,13 @@ def hand_mouse(placeholder):
                     landmark_drawing_spec=drawing_styles.get_default_hand_landmarks_style(),
                     connection_drawing_spec=drawing_styles.get_default_hand_connections_style())
 
-                # controling the mouse with the whole hand
-
-                    # Get the dimensions of the frame
+                # hand control logic
                     height, width, _ = frame.shape
-                    # Extract the x and y coordinates of the hand landmarks
+
+
                     x_coordinates = [landmark.x for landmark in hand_landmarks]
                     y_coordinates = [landmark.y for landmark in hand_landmarks]
+
 
                     # get the centre of the tringle formed by the wrist, index finger mcp and pinky mcp to use it as a reference point for the mouse cursor
                     wrist_tip = (int(x_coordinates[0] * width), int(y_coordinates[0] * height))
@@ -96,6 +96,8 @@ def hand_mouse(placeholder):
                     middle_finger_tip = (int(x_coordinates[12] * width), int(y_coordinates[12] * height))
                     ring_tip = (int(x_coordinates[16] * width), int(y_coordinates[16] * height))
                     pinky_tip = (int(x_coordinates[20] * width), int(y_coordinates[20] * height))
+                     
+                    
 
 
 
@@ -106,15 +108,22 @@ def hand_mouse(placeholder):
 
                     
                     if click_distance < 40:  
-                        pyautogui.click()    
+                        pyautogui.click() 
+                        cv2.putText(frame, 'Click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)   
                     elif drag_distance < 40:
                         pyautogui.mouseDown()
+                        cv2.putText(frame, 'hold', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
                     elif right_click_distance < 40:
                         pyautogui.click(button='right') 
-                    elif scroll_distance < 60 and scroll_distance > 20:
-                        pyautogui.scroll(100)
-                    elif scroll_distance > 60 and scroll_distance < 100:
-                        pyautogui.scroll(-100)
+                        cv2.putText(frame, 'right-click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
+                    elif scroll_distance < 40 and scroll_distance > 0:
+                        pyautogui.scroll(80)
+                        cv2.putText(frame, 'scroll-up', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
+                    elif scroll_distance > 50 and scroll_distance < 90:
+                        pyautogui.scroll(-80)
+                        cv2.putText(frame, 'scroll-down', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
+                    else:
+                        pyautogui.moveTo((middle_point))
 
 
             placeholder.image(frame, channels='BGR')
