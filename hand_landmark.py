@@ -1,12 +1,20 @@
 import cv2
 import mediapipe as mp
 import streamlit as st
+import pygame 
 import numpy as np
 import time
+import random
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.vision import drawing_utils
 from mediapipe.tasks.python.vision import drawing_styles
+
+
+#add sound effect
+pygame.mixer.init()
+magic_sound = pygame.mixer.Sound(r'e:\yamen models\mediapipe\koiroylers-magical-whoosh-355988.mp3')
+
 
 # overlay func for transparent images
 def overlay_transparent(background, overlay, x, y):
@@ -46,6 +54,7 @@ def hand_landmark(placeholder):
     HandLandmarker=vision.HandLandmarker
 
     angle = 0 
+    sound_playing = False
     latest_result = None
 
     def result_callback(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
@@ -115,6 +124,15 @@ def hand_landmark(placeholder):
 
 
                             frame = overlay_transparent(frame, final_magic, cx - size//2, cy - size//2)
+
+                            
+            # sound effect
+            if is_hand_open and not sound_playing  and magic_sound:
+                magic_sound.play() 
+                sound_playing = True
+            elif not is_hand_open and sound_playing and  magic_sound:
+                magic_sound.stop()
+                sound_playing = False
 
             placeholder.image(frame, channels='BGR')
 
