@@ -1,4 +1,5 @@
 .venv
 .vscode
 .venv/Lib/site-packages
-__pycache__
+__pycache__/
+*.pyc
