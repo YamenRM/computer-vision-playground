@@ -43,6 +43,8 @@ def hand_mouse(placeholder):
     with HandLandmarker.create_from_options(options) as landmarker:
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 
         
@@ -89,6 +91,8 @@ def hand_mouse(placeholder):
                     cv2.circle(frame, (middle_point), 10, (0, 255, 255), -1)
 
                     pyautogui.moveTo((middle_point))
+                    pyautogui.FAILSAFE = False
+                    pyautogui.PAUSE = 0
 
                     # makeing the mouse functions
                     index_tip = (int(x_coordinates[8] * width), int(y_coordinates[8] * height))
@@ -109,24 +113,24 @@ def hand_mouse(placeholder):
                     
                     if click_distance < 40:  
                         pyautogui.click() 
-                        cv2.putText(frame, 'Click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)   
+                        cv2.putText(frame, 'Click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)   
                     elif drag_distance < 40:
                         pyautogui.mouseDown()
-                        cv2.putText(frame, 'hold', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
+                        cv2.putText(frame, 'hold', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
                     elif right_click_distance < 40:
                         pyautogui.click(button='right') 
-                        cv2.putText(frame, 'right-click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
-                    elif scroll_distance < 40 and scroll_distance > 0:
-                        pyautogui.scroll(80)
-                        cv2.putText(frame, 'scroll-up', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
-                    elif scroll_distance > 50 and scroll_distance < 90:
-                        pyautogui.scroll(-80)
-                        cv2.putText(frame, 'scroll-down', (0 ,height), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 0), 1)
+                        cv2.putText(frame, 'right-click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+                    elif scroll_distance < 50 and scroll_distance > 0:
+                        pyautogui.scroll(50)
+                        cv2.putText(frame, 'scroll-up', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+                    elif scroll_distance > 60 and scroll_distance < 90:
+                        pyautogui.scroll(-50)
+                        cv2.putText(frame, 'scroll-down', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
                     else:
                         pyautogui.moveTo((middle_point))
 
 
-            placeholder.image(frame, channels='BGR')
+            placeholder.image(frame, channels='BGR' , width='stretch' ) 
 
     cap.release()
     cv2.destroyAllWindows()

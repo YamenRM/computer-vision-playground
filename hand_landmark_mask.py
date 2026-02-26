@@ -1,7 +1,6 @@
 import cv2
 import mediapipe as mp
 import streamlit as st
-import pygame 
 import numpy as np
 import time
 import random
@@ -9,11 +8,6 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.vision import drawing_utils
 from mediapipe.tasks.python.vision import drawing_styles
-
-
-#add sound effect
-pygame.mixer.init()
-magic_sound = pygame.mixer.Sound(r'e:\yamen models\mediapipe\koiroylers-magical-whoosh-355988.mp3')
 
 
 # overlay func for transparent images
@@ -43,7 +37,7 @@ def is_hand_open(hand_landmarks):
         if hand_landmarks[t].y < hand_landmarks[p].y: open_fingers += 1
     return open_fingers >= 4
 
-def hand_landmark(placeholder):
+def hand_landmark_mask(placeholder):
     
     # initialize mediapipe Hand landmarker
     BaseOptions = mp.tasks.BaseOptions
@@ -54,7 +48,6 @@ def hand_landmark(placeholder):
     HandLandmarker=vision.HandLandmarker
 
     angle = 0 
-    sound_playing = False
     latest_result = None
 
     def result_callback(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
@@ -84,7 +77,7 @@ def hand_landmark(placeholder):
 
 
         
-        while cap.isOpened() and st.session_state.get('run_hand_landmark', False):
+        while cap.isOpened() and st.session_state.get('run_hand_landmark_mask', False):
             success, frame = cap.read()
             if not success: break
 
@@ -112,7 +105,7 @@ def hand_landmark(placeholder):
                         
                         if size > 10:
                            
-                            angle = (angle + 10) % 360 
+                            angle = (angle + 5) % 360 
                             M = cv2.getRotationMatrix2D((overlay_img.shape[1]//2, overlay_img.shape[0]//2), angle, 1.0)
                             rotated = cv2.warpAffine(overlay_img, M, (overlay_img.shape[1], overlay_img.shape[0]), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0,0,0,0))
                           
@@ -120,20 +113,12 @@ def hand_landmark(placeholder):
 
                             glow_size = 5 + int(5 * np.sin(time.time() * 5)) 
                             final_magic = cv2.GaussianBlur(resized, (0,1), glow_size)
-                            final_magic = cv2.addWeighted(resized, 1.0, final_magic, 1.0, 0)
+                            final_magic = cv2.addWeighted(resized, 0.5, final_magic, 1.5, 0)
 
 
                             frame = overlay_transparent(frame, final_magic, cx - size//2, cy - size//2)
 
                             
-            # sound effect
-            if is_hand_open and not sound_playing  and magic_sound:
-                magic_sound.play() 
-                sound_playing = True
-            elif not is_hand_open and sound_playing and  magic_sound:
-                magic_sound.stop()
-                sound_playing = False
-
             placeholder.image(frame, channels='BGR')
 
     cap.release()
