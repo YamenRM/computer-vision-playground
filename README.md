@@ -55,10 +55,30 @@ The application uses external model and image files.
 5. Visual effects or mouse actions are applied in real time.
 
 ---
+## How to Use
 
-## Installation
+Follow the instructions below to work with **Computer Vision Playground**.
+
+### 1- Installation
 
 ```bash
 git clone https://github.com/yourusername/computer-vision-playground.git
 cd computer-vision-playground
 pip install -r requirements.txt
+```
+### 2- assgine the model paths in the three files and the img path on the hand_landmark_mask.py
+
+### 3- change the parmeters(optinal)
+
+feel free to change the options of the models and other changeable parameters.
+
+### 4- run main.py
+
+```bash
+streamlit run main.py
+```
+### 5- Have fun
+
+
+## Author
+YamenRM | 2026 
