@@ -28,7 +28,7 @@ def hand_mouse(placeholder):
         latest_result = result
 
     # setup mediapipe hand landmarker options
-    base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/hand_landmarker.task')
+    base_options = BaseOptions (model_asset_path='Your_Path')
     options = HandLandmarkerOptions(
         base_options=base_options,
         num_hands=1,  
