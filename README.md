@@ -69,7 +69,7 @@ cd computer-vision-playground
 pip install -r requirements.txt
 ```
 
-### 2- Change model parameters(optinal)
+#### 2- Change model parameters(optinal)
 
 feel free to change the options of the models .
 
