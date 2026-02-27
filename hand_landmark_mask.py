@@ -55,7 +55,7 @@ def hand_landmark_mask(placeholder):
         latest_result = result
 
     # setup mediapipe hand landmarker options
-    base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/hand_landmarker.task')
+    base_options = BaseOptions (model_asset_path='Your_model_path')
     options = HandLandmarkerOptions(
         base_options=base_options,
         num_hands=2,  
@@ -67,7 +67,7 @@ def hand_landmark_mask(placeholder):
     )
 
 
-    overlay_img = cv2.imread(r'e:\yamen models\mediapipe\imege.png', cv2.IMREAD_UNCHANGED)
+    overlay_img = cv2.imread(r'Your_image_path', cv2.IMREAD_UNCHANGED)
 
     # start the live cam and hand detection loop
     with HandLandmarker.create_from_options(options) as landmarker:
