@@ -39,7 +39,7 @@ Hand gestures are translated into mouse actions such as:
 
 ## Assets and Models
 
-The application uses external model and image files.
+Download the required models:
 
 - `models/` → [handlandmarker model](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task) ,
   [facelandmarker model](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task)
@@ -65,10 +65,10 @@ Follow the instructions below to work with **Computer Vision Playground**.
 
 ```bash
 git clone https://github.com/yourusername/computer-vision-playground.git
- cd computer-vision-playground
- pip install -r requirements.txt
+cd computer-vision-playground
+pip install -r requirements.txt
 ```
-### 2- assgine paths 
+### 2- Configure paths 
 
  -  for the three logic files not the main.py :
  
@@ -79,7 +79,7 @@ git clone https://github.com/yourusername/computer-vision-playground.git
 
  overlay_img = cv2.imread(r'Your_image_path', cv2.IMREAD_UNCHANGED
 
-### 3- change the parmeters(optinal)
+### 3- Change model parameters(optinal)
 
 feel free to change the options of the models .
 
@@ -95,9 +95,17 @@ streamlit run main.py
 
 3. Hand Mouse Control
 
-### 6- allow camere on browser
+### 6- Allow camera access
 
 ### 7- Have fun
+
+---
+
+## Future Improvements
+
+- Virtual drawing
+- Gesture shortcuts
+- Performance optimization
 
 ---
 
