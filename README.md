@@ -39,7 +39,7 @@ Hand gestures are translated into mouse actions such as:
 
 ## Assets and Models
 
-Download the required models:
+used models:
 
 - `models/` → [handlandmarker model](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task) ,
   [facelandmarker model](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task)
