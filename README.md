@@ -68,36 +68,26 @@ git clone https://github.com/yourusername/computer-vision-playground.git
 cd computer-vision-playground
 pip install -r requirements.txt
 ```
-### 2- Configure paths 
 
- -  for the three logic files not the main.py :
- 
-   base_options = BaseOptions (model_asset_path='Your_model_path')
-
-
-  - for the img in hand_landmark_mask.py :
-
- overlay_img = cv2.imread(r'Your_image_path', cv2.IMREAD_UNCHANGED
-
-### 3- Change model parameters(optinal)
+### 2- Change model parameters(optinal)
 
 feel free to change the options of the models .
 
-### 4- run main.py
+### 3- run main.py
 
 ```bash
-streamlit run main.py
+streamlit run src/main.py
 ```
-### 5- choose the mode 
+### 4- choose the mode 
 1. Face Landmark Detection
 
 2. Hand Landmark Mask
 
 3. Hand Mouse Control
 
-### 6- Allow camera access
+### 5- Allow camera access
 
-### 7- Have fun
+### 6- Have fun
 
 ---
 
