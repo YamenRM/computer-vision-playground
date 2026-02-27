@@ -26,7 +26,7 @@ def face_landmark(placeholder):
         latest_result = result
 
     # setup mediapipe face landmarker options
-    base_options = BaseOptions (model_asset_path='E:/yamen models/mediapipe/face_landmarker.task')
+    base_options = BaseOptions (model_asset_path='Your_model_path')
     options = FaceLandmarkerOptions(
         base_options=base_options,
         num_faces=2,  
