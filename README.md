@@ -36,6 +36,16 @@ The image follows the hand in real time, creating a simple augmented reality exp
 
 ---
 
+## Assets and Models
+
+The application uses external model and image files.
+
+- `models/` → [handlandmarker model](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task) ,
+  [facelandmarker model](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task)
+- `assets/` → [dr.strange hand img](https://pngtree.com/so/dr-strange)
+
+---
+
 ## How It Works
 
 1. The webcam captures video frames.
