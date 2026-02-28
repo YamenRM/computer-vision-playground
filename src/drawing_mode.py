@@ -85,11 +85,11 @@ def drawing_mode(placeholder):
             
 
                     if  ring_tip.y > ring_mcp.y  and index_tip.y > index_mcp.y and middle_tip.y > middle_mcp.y:
-                #  NEUTRAL MODE 
+                #  NEUTRAL MODE (hand closed)
                         cv2.putText(frame, "NEUTRAL", (50, 50), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                        last_x, last_y = 0, 0 # Reset tracking so it doesn't jump when you reopen
-                    
+                        last_x, last_y = 0, 0 # Reset tracking 
+                #  ClEAR (hand open)
                     elif ring_tip.y < ring_mcp.y  and index_tip.y < index_mcp.y and middle_tip.y < middle_mcp.y:
                         st.session_state.canvas = np.zeros((480, 640, 3), dtype=np.uint8)
                         last_x, last_y = 0, 0
@@ -97,18 +97,17 @@ def drawing_mode(placeholder):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 
                     else:
-                # 2. Hand is open, now decide between DRAW and ERASE
                         dist = ((index_tip.x - middle_tip.x)**2 + (index_tip.y - middle_tip.y)**2)**0.5
 
                         if dist < 0.08:
-                    # --- ERASING MODE ---
+                    # ERASING MODE 
                             cv2.circle(frame, (curr_x, curr_y), 40, (255, 255, 255), 2)
                             cv2.putText(frame, "ERASING", (curr_x + 35, curr_y + 35), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
                             cv2.circle(st.session_state.canvas, (curr_x, curr_y), 40, erase_color, -1)
                             last_x, last_y = 0, 0 
                         else: 
-                    # --- DRAWING MODE ---
+                    #  DRAWING MODE 
                             cv2.circle(frame, (curr_x, curr_y), 8, draw_color, -1)
                             cv2.putText(frame, "DRAWING", (curr_x + 15, curr_y + 15), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, draw_color, 1)
