@@ -3,11 +3,12 @@ import cv2
 from face_landmark import face_landmark
 from hand_landmark_mask import hand_landmark_mask
 from hand_mouse import hand_mouse
+from drawing_mode import drawing_mode
 
 st.title("Computer Vision Playground")
 st.write("This app demonstrates real-time face and hand landmark mask, as well as hand gesture-based mouse control using Mediapipe and Streamlit.")
 
-tab1, tab2, tab3 = st.tabs(["Face Landmark Detection", "Hand Landmark Mask", "Hand Mouse Control"])
+tab1, tab2, tab3 , tab4= st.tabs(["Face Landmark Detection", "Hand Landmark Mask", "Hand Mouse Control" , "Drawing Mode"])
 
 vedio_placeholder = st.empty()
 
@@ -31,6 +32,13 @@ with tab3:
         hand_mouse(vedio_placeholder)
     elif st.button("Stop Hand Mouse Control"):
         st.session_state['run_mouse'] = False
+
+with tab4:
+    if st.button("Run Drawing Mode"):
+        st.session_state['run_drawing_mode'] = True
+        drawing_mode(vedio_placeholder)
+    elif st.button("Stop Drawing Mode"):
+        st.session_state['run_drawing_mode'] = False
 
 
 st.write("YamenRM - 2026")
