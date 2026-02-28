@@ -113,19 +113,19 @@ def hand_mouse(placeholder):
                     
                     if click_distance < 40:  
                         pyautogui.click() 
-                        cv2.putText(frame, 'Click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)   
+                        cv2.putText(frame, 'Click', (0 ,height), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)   
                     elif drag_distance < 40:
                         pyautogui.mouseDown()
-                        cv2.putText(frame, 'hold', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+                        cv2.putText(frame, 'hold', (0 ,height), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
                     elif right_click_distance < 40:
                         pyautogui.click(button='right') 
-                        cv2.putText(frame, 'right-click', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+                        cv2.putText(frame, 'right-click', (0 ,height), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
                     elif scroll_distance < 50 and scroll_distance > 0:
                         pyautogui.scroll(50)
-                        cv2.putText(frame, 'scroll-up', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+                        cv2.putText(frame, 'scroll-up', (0 ,height), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
                     elif scroll_distance > 60 and scroll_distance < 90:
                         pyautogui.scroll(-50)
-                        cv2.putText(frame, 'scroll-down', (0 ,height), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+                        cv2.putText(frame, 'scroll-down', (0 ,height), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
                     else:
                         pyautogui.moveTo((middle_point))
 
