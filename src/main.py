@@ -25,6 +25,7 @@ with tab2:
         hand_landmark_mask(vedio_placeholder)
     elif st.button("Stop Hand Landmark Mask"):
         st.session_state['run_hand_landmark_mask'] = False
+    st.write("raise your hand")
 
 with tab3:
     if st.button("Run Hand Mouse Control"):
@@ -32,6 +33,18 @@ with tab3:
         hand_mouse(vedio_placeholder)
     elif st.button("Stop Hand Mouse Control"):
         st.session_state['run_mouse'] = False
+    st.write("moving the mouse ---> open your hand" )
+             
+    st.write("click ---> touch your thumb and index fingers together")
+    
+    st.write("right-click ---> touch your thumb and middle fingers together" )
+    
+    st.write("drag ---> touch your thumb and ring fingers together" )
+    
+    st.write( "scroll-up ---> touch your thumb and pinky fingers together and keep them close" )
+    
+    st.write("scroll-down ---> touch your thumb and pinky fingers together and keep them a bit apart")
+    
 
 with tab4:
     if st.button("Run Drawing Mode"):
@@ -39,6 +52,13 @@ with tab4:
         drawing_mode(vedio_placeholder)
     elif st.button("Stop Drawing Mode"):
         st.session_state['run_drawing_mode'] = False
+    st.write("Draw ---> rise your index finger" )
+             
+    st.write("Erase ---> put your inedx and middile fingers together" )
+    
+    st.write("Move ---> close your hand" )
+    
+    st.write("Clear ---> open your hand")
 
 
 st.write("YamenRM - 2026")
