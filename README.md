@@ -5,18 +5,6 @@ The application demonstrates face tracking, hand tracking, gesture-based control
 
 ---
 
-# Demo
-
-![Hand AR Demo](Misc/hand.gif)
-
-![Drawing Demo](Misc/draw.gif)
-
-![Face Landmark Ditiction Demo](Misc/face.gif)
-
-![Mouse Control Demo](Misc/mouse.gif)
-
----
-
 # Features
 
 ## Face Landmark Detection
