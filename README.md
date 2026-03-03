@@ -1,4 +1,4 @@
-# Computer Vision Playground
+# Computer Vision Experiments Lab
 
 Interactive real-time computer vision experiments built with Python.
 The application demonstrates face tracking, hand tracking, gesture-based control, augmented reality overlays, and air drawing using a webcam.
@@ -51,7 +51,7 @@ Turn your index finger into a digital brush:
 # Project Structure
 
 ```
-computer-vision-playground
+Computer-Vision-Experiments-Lab
 │
 ├── src
 │   ├── main.py
@@ -77,8 +77,8 @@ computer-vision-playground
 # Installation
 
 ```bash
-git clone https://github.com/yourusername/computer-vision-playground.git
-cd computer-vision-playground
+git clone https://github.com/yourusername/Computer-Vision-Experiments-Lab.git
+cd Computer-Vision-Experiments-Lab
 pip install -r requirements.txt
 ```
 
